@@ -47,13 +47,13 @@
     <Button
         android:layout_toRightOf="@id/buttonCapnhat"
         android:layout_below="@id/buttonThongtin"
-        android:text="Reset mat khau"
-        android:id="@+id/buttonResetpassword"
+        android:text="Cập nhật mat khau"
+        android:id="@+id/button_updatepassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button
         android:layout_marginTop="10dp"
-        android:layout_below="@id/buttonResetpassword"
+        android:layout_below="@id/button_updatepassword"
         android:text="Xac thuc email"
         android:id="@+id/buttonVerification"
         android:layout_width="wrap_content"
