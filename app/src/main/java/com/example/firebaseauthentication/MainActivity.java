@@ -5,10 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.firebaseauthentication.databinding.ActivityMainBinding;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -20,13 +25,15 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     ActivityMainBinding mBinding;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mAuth = FirebaseAuth.getInstance();
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mBinding.adView.loadAd(adRequest);
 
         mBinding.buttonDangky.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +125,27 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                 }
+            }
+        });
+        mBinding.buttonVerification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseUser user = auth.getCurrentUser();
 
+                if (user != null){
+                    user.sendEmailVerification()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(MainActivity.this, "Gửi xác thực email thành công", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Log.d("BBB",task.getException().toString());
+                                    }
+                                }
+                            });
+                }
             }
         });
     }
